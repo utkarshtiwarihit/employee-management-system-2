@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -72,8 +73,16 @@ public class AppController {
         if (user != null) {
             LocalDate today = LocalDate.now(IST);
             attendanceRepo.findByUserAndDate(user, today).ifPresent(att -> {
-                att.setCheckOutTime(LocalTime.now(IST).truncatedTo(ChronoUnit.SECONDS));
+                LocalTime outTime = LocalTime.now(IST).truncatedTo(ChronoUnit.SECONDS);
+                att.setCheckOutTime(outTime);
                 att.setStatus("COMPLETED");
+
+                if (att.getCheckInTime() != null) {
+                    Duration duration = Duration.between(att.getCheckInTime(), outTime);
+                    long hours = duration.toHours();
+                    long minutes = duration.toMinutesPart();
+                    att.setTotalWorkingHours(hours + "h " + minutes + "m");
+                }
                 attendanceRepo.save(att);
             });
         }
@@ -107,11 +116,18 @@ public class AppController {
                 .filter(a -> a.getDate().equals(today))
                 .count();
 
+        long totalStaff = employees.stream()
+                .filter(u -> u.getRole().equalsIgnoreCase("EMPLOYEE"))
+                .count();
+
+        long absentToday = Math.max(0, totalStaff - presentToday);
+
         model.addAttribute("user", user);
         model.addAttribute("employees", employees);
         model.addAttribute("attendances", attendances);
-        model.addAttribute("totalStaff", employees.size());
+        model.addAttribute("totalStaff", totalStaff);
         model.addAttribute("presentToday", presentToday);
+        model.addAttribute("absentToday", absentToday);
         return "hr";
     }
 

@@ -2,119 +2,122 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>HR Management Portal</title>
+    <title>Management Center • WorkSync</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-8">
+<body class="bg-slate-50 text-slate-800 min-h-screen p-6 sm:p-10">
     <div class="max-w-6xl mx-auto space-y-6">
         <!-- Header -->
-        <header class="flex justify-between items-center bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+        <header class="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
             <div>
-                <h1 class="text-xl font-bold">HR Workspace Dashboard</h1>
-                <p class="text-sm text-slate-400" th:text="${user.name} + ' (Admin)'"></p>
+                <h1 class="text-xl font-bold text-slate-900">WorkSync Administrative Suite</h1>
+                <p class="text-sm text-slate-500" th:text="${user.name} + ' (HR Officer)'"></p>
             </div>
-            <a href="/logout" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-sm transition">Sign out</a>
+            <a href="/logout" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition">Sign Out</a>
         </header>
 
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
-                <p class="text-xs uppercase tracking-wider text-slate-400">Total Staff</p>
-                <p class="text-3xl font-bold mt-2 text-indigo-400" th:text="${totalStaff}">0</p>
+        <!-- KPI Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                <p class="text-xs uppercase font-bold tracking-wider text-slate-400">Total Headcount</p>
+                <p class="text-3xl font-bold text-blue-600 mt-2" th:text="${totalStaff}">0</p>
             </div>
-            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
-                <p class="text-xs uppercase tracking-wider text-slate-400">Present Today</p>
-                <p class="text-3xl font-bold mt-2 text-emerald-400" th:text="${presentToday}">0</p>
+            <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                <p class="text-xs uppercase font-bold tracking-wider text-slate-400">Present Today</p>
+                <p class="text-3xl font-bold text-emerald-600 mt-2" th:text="${presentToday}">0</p>
+            </div>
+            <div class="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                <p class="text-xs uppercase font-bold tracking-wider text-slate-400">Absent Today</p>
+                <p class="text-3xl font-bold text-rose-500 mt-2" th:text="${absentToday}">0</p>
             </div>
         </div>
 
-        <!-- Add Employee Form -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 class="text-lg font-semibold mb-4 text-slate-200">Add New Employee</h2>
+        <!-- Onboard Employee -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4">Onboard Staff Member</h2>
             <form action="/hr/add-employee" method="post" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                    <label class="text-xs uppercase tracking-wider text-slate-400">Full Name</label>
-                    <input type="text" name="name" required placeholder="e.g. John Doe"
-                           class="w-full mt-1.5 px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500">
+                    <label class="text-xs font-semibold text-slate-600 uppercase">Name</label>
+                    <input type="text" name="name" required placeholder="Aman Gupta"
+                           class="w-full mt-1.5 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
                 <div>
-                    <label class="text-xs uppercase tracking-wider text-slate-400">Designation</label>
-                    <input type="text" name="designation" required placeholder="e.g. Software Engineer"
-                           class="w-full mt-1.5 px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500">
+                    <label class="text-xs font-semibold text-slate-600 uppercase">Designation</label>
+                    <input type="text" name="designation" required placeholder="Backend Engineer"
+                           class="w-full mt-1.5 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
                 <div>
-                    <label class="text-xs uppercase tracking-wider text-slate-400">Email</label>
-                    <input type="email" name="email" required placeholder="name@company.com"
-                           class="w-full mt-1.5 px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500">
+                    <label class="text-xs font-semibold text-slate-600 uppercase">Email</label>
+                    <input type="email" name="email" required placeholder="aman@worksync.com"
+                           class="w-full mt-1.5 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
                 <div>
-                    <label class="text-xs uppercase tracking-wider text-slate-400">Password</label>
+                    <label class="text-xs font-semibold text-slate-600 uppercase">Password</label>
                     <input type="password" name="password" required placeholder="••••••••"
-                           class="w-full mt-1.5 px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-indigo-500">
+                           class="w-full mt-1.5 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                 </div>
                 <div class="md:col-span-4 flex justify-end">
-                    <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl shadow-lg shadow-indigo-600/30 transition">
-                        + Create Employee
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md shadow-blue-600/20">
+                        + Add to Directory
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Registered Employees Table -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 class="text-lg font-semibold mb-4 text-slate-200">Registered Staff</h2>
+        <!-- Directory Table -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4">Team Directory</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="text-slate-500 border-b border-slate-800">
+                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-100">
                         <tr>
-                            <th class="pb-3">ID</th>
+                            <th class="pb-3">Staff ID</th>
                             <th class="pb-3">Name</th>
-                            <th class="pb-3">Designation</th>
-                            <th class="pb-3">Email</th>
-                            <th class="pb-3">Role</th>
-                            <th class="pb-3">Leaves Taken</th>
+                            <th class="pb-3">Role & Title</th>
+                            <th class="pb-3">Contact</th>
+                            <th class="pb-3">Leaves Consumed</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/50">
-                        <tr th:each="emp : ${employees}" class="hover:bg-slate-800/30">
-                            <td class="py-3.5 text-slate-400" th:text="${emp.id}"></td>
-                            <td class="py-3.5 font-medium text-slate-200" th:text="${emp.name}"></td>
-                            <td class="py-3.5 text-slate-400" th:text="${emp.designation}"></td>
-                            <td class="py-3.5 text-slate-400" th:text="${emp.email}"></td>
-                            <td class="py-3.5">
-                                <span th:class="${emp.role == 'HR' ? 'text-purple-400 bg-purple-500/10 border-purple-500/20' : 'text-blue-400 bg-blue-500/10 border-blue-500/20'} + ' px-2.5 py-1 text-xs border rounded-md font-medium'"
-                                      th:text="${emp.role}">
-                                </span>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr th:each="emp : ${employees}">
+                            <td class="py-3.5 text-slate-500 font-mono" th:text="${emp.id}"></td>
+                            <td class="py-3.5 font-semibold text-slate-900" th:text="${emp.name}"></td>
+                            <td class="py-3.5 text-slate-600">
+                                <span class="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700 font-medium" th:text="${emp.role}"></span>
+                                <span class="text-xs ml-1" th:text="${emp.designation}"></span>
                             </td>
-                            <td class="py-3.5 text-amber-400 font-medium" th:text="${emp.leavesTaken != null ? emp.leavesTaken : 0.0} + ' d'"></td>
+                            <td class="py-3.5 text-slate-600" th:text="${emp.email}"></td>
+                            <td class="py-3.5 text-amber-600 font-medium" th:text="${emp.leavesTaken != null ? emp.leavesTaken : 0.0} + ' Days'"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Live Attendance Feed -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h2 class="text-lg font-semibold mb-4 text-slate-200">Live Attendance Records</h2>
+        <!-- Logs Feed -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4">Master Attendance Audit</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
-                    <thead class="text-slate-500 border-b border-slate-800">
+                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-100">
                         <tr>
-                            <th class="pb-3">Employee</th>
+                            <th class="pb-3">Personnel</th>
                             <th class="pb-3">Date</th>
                             <th class="pb-3">In</th>
                             <th class="pb-3">Out</th>
+                            <th class="pb-3">Work Span</th>
                             <th class="pb-3">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/50">
-                        <tr th:each="att : ${attendances}" class="hover:bg-slate-800/30">
-                            <td class="py-3.5 font-medium" th:text="${att.user.name}"></td>
-                            <td class="py-3.5 text-slate-400" th:text="${att.date}"></td>
-                            <td class="py-3.5 text-slate-200" th:text="${att.checkInTime}">--</td>
-                            <td class="py-3.5 text-slate-200" th:text="${att.checkOutTime != null ? att.checkOutTime : '--'}">--</td>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr th:each="att : ${attendances}">
+                            <td class="py-3.5 font-medium text-slate-900" th:text="${att.user.name}"></td>
+                            <td class="py-3.5 text-slate-500" th:text="${att.date}"></td>
+                            <td class="py-3.5 text-slate-700 font-mono text-xs" th:text="${att.checkInTime}"></td>
+                            <td class="py-3.5 text-slate-700 font-mono text-xs" th:text="${att.checkOutTime != null ? att.checkOutTime : '--'}"></td>
+                            <td class="py-3.5 text-blue-600 font-semibold text-xs" th:text="${att.totalWorkingHours != null ? att.totalWorkingHours : '--'}"></td>
                             <td class="py-3.5">
-                                <span th:class="${att.status == 'COMPLETED' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20'} + ' px-2.5 py-1 text-xs border rounded-md font-medium'"
+                                <span th:class="${att.status == 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'} + ' px-2.5 py-1 text-xs border rounded-lg font-medium'"
                                       th:text="${att.status}">
                                 </span>
                             </td>

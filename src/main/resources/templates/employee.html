@@ -2,99 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Employee Workspace</title>
+    <title>Employee Desk • WorkSync</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-8">
+<body class="bg-slate-50 text-slate-800 min-h-screen p-6 sm:p-10">
     <div class="max-w-4xl mx-auto space-y-6">
-        <!-- Header -->
-        <header class="flex justify-between items-center bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+        <!-- Top Nav -->
+        <header class="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
             <div>
-                <h1 class="text-xl font-semibold" th:text="'Hello, ' + ${user.name}">Hello</h1>
-                <p class="text-sm text-slate-400" th:text="${user.designation} + ' • ' + ${user.email}"></p>
+                <h1 class="text-xl font-bold text-slate-900" th:text="${user.name}">Aman Gupta</h1>
+                <p class="text-sm text-slate-500" th:text="${user.designation} + ' • ' + ${user.email}"></p>
             </div>
-            <a href="/logout" class="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition">Sign out</a>
+            <a href="/logout" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition">Sign Out</a>
         </header>
 
-        <!-- Stats Overview (Live IST Clock + Leaves) -->
+        <!-- Stats Bar -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                <p class="text-xs uppercase tracking-wider text-slate-400">Current Time (IST)</p>
-                <p id="liveClock" class="text-3xl font-bold mt-2 text-indigo-400 font-mono">--:--:--</p>
+            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Live Local Clock (IST)</p>
+                <p id="liveClock" class="text-3xl font-bold font-mono text-blue-600 mt-2">--:--:--</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex justify-between items-center">
+            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs uppercase tracking-wider text-slate-400">Leaves Taken</p>
-                    <p class="text-3xl font-bold mt-2 text-amber-400" th:text="${user.leavesTaken != null ? user.leavesTaken : 0.0} + ' Days'">0.0 Days</p>
+                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Leave Balance Used</p>
+                    <p class="text-3xl font-bold text-amber-500 mt-2" th:text="${user.leavesTaken != null ? user.leavesTaken : 0.0} + ' Days'">0.0 Days</p>
                 </div>
-                <form action="/employee/apply-leave" method="post" class="flex items-center gap-2">
-                    <select name="days" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
-                        <option value="0.5">Half Day (0.5)</option>
-                        <option value="1.0" selected>Full Day (1.0)</option>
+                <form action="/employee/apply-leave" method="post" class="flex gap-2">
+                    <select name="days" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700">
+                        <option value="0.5">0.5 Day</option>
+                        <option value="1.0" selected>1.0 Day</option>
                     </select>
-                    <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded-xl text-sm font-medium transition shadow-lg shadow-amber-600/20">
-                        Apply Leave
+                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-amber-500/20">
+                        Request Leave
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- Punch Clock -->
-        <div class="bg-gradient-to-r from-slate-900 to-indigo-950 border border-slate-800 p-6 rounded-2xl flex items-center justify-between">
+        <!-- Punch Desk -->
+        <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-                <h2 class="text-lg font-medium">Daily Punch Clock</h2>
-                <p class="text-sm text-slate-400">Log entry and exit time.</p>
+                <h2 class="text-base font-bold text-slate-900">Attendance Terminal</h2>
+                <p class="text-sm text-slate-500">Record check-in and check-out to compute working duration.</p>
             </div>
-            <div class="flex gap-3">
+            <div>
                 <form th:if="${todayRecord == null}" action="/employee/punch-in" method="post">
-                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-medium shadow-lg shadow-emerald-600/20 transition">Punch In</button>
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-md shadow-emerald-600/20 transition text-sm">
+                        Punch In
+                    </button>
                 </form>
                 <form th:if="${todayRecord != null and todayRecord.status == 'IN'}" action="/employee/punch-out" method="post">
-                    <button type="submit" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 rounded-xl font-medium shadow-lg shadow-amber-600/20 transition">Punch Out</button>
+                    <button type="submit" class="px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold shadow-md shadow-rose-600/20 transition text-sm">
+                        Punch Out
+                    </button>
                 </form>
-                <div th:if="${todayRecord != null and todayRecord.status == 'COMPLETED'}" class="px-4 py-2 bg-slate-800 text-emerald-400 border border-emerald-500/30 rounded-xl text-sm font-medium">
-                    ✓ Completed for Today
+                <div th:if="${todayRecord != null and todayRecord.status == 'COMPLETED'}" class="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-sm font-medium">
+                    ✓ Logged for Today (<span th:text="${todayRecord.totalWorkingHours}"></span>)
                 </div>
             </div>
         </div>
 
-        <!-- History Table -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-            <h3 class="font-medium mb-4 text-slate-300">Activity Log</h3>
-            <table class="w-full text-left text-sm">
-                <thead class="text-slate-500 border-b border-slate-800">
-                    <tr>
-                        <th class="pb-3">Date</th>
-                        <th class="pb-3">Check-In</th>
-                        <th class="pb-3">Check-Out</th>
-                        <th class="pb-3">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800/60">
-                    <tr th:each="att : ${history}" class="hover:bg-slate-800/30">
-                        <td class="py-3.5" th:text="${att.date}"></td>
-                        <td class="py-3.5 text-slate-300" th:text="${att.checkInTime}">--</td>
-                        <td class="py-3.5 text-slate-300" th:text="${att.checkOutTime != null ? att.checkOutTime : '--'}">--</td>
-                        <td class="py-3.5">
-                            <span th:class="${att.status == 'COMPLETED' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20'} + ' px-2.5 py-1 text-xs border rounded-md font-medium'"
-                                  th:text="${att.status}">
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Timeline Log -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+            <h3 class="font-bold text-slate-900 mb-4 text-base">Personal Punch History</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-100">
+                        <tr>
+                            <th class="pb-3">Date</th>
+                            <th class="pb-3">In</th>
+                            <th class="pb-3">Out</th>
+                            <th class="pb-3">Duration</th>
+                            <th class="pb-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr th:each="att : ${history}">
+                            <td class="py-3.5 font-medium text-slate-900" th:text="${att.date}"></td>
+                            <td class="py-3.5 text-slate-600" th:text="${att.checkInTime}">--</td>
+                            <td class="py-3.5 text-slate-600" th:text="${att.checkOutTime != null ? att.checkOutTime : '--'}">--</td>
+                            <td class="py-3.5 text-blue-600 font-medium" th:text="${att.totalWorkingHours != null ? att.totalWorkingHours : '--'}"></td>
+                            <td class="py-3.5">
+                                <span th:class="${att.status == 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'} + ' px-2.5 py-1 text-xs border rounded-lg font-medium'"
+                                      th:text="${att.status}">
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Live IST Clock Script -->
     <script>
-        function updateClock() {
-            const now = new Date();
-            const istTime = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
-            document.getElementById('liveClock').textContent = istTime;
+        function refreshTime() {
+            document.getElementById('liveClock').textContent = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true });
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(refreshTime, 1000);
+        refreshTime();
     </script>
 </body>
 </html>

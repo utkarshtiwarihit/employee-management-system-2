@@ -13,27 +13,27 @@ public class DemoApplication {
     }
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepo) {
+    CommandLineRunner initData(UserRepository userRepo) {
         return args -> {
-            // 1. HR Login Account
-            User hr = new User();
-            hr.setName("HR Admin");
-            hr.setDesignation("HR Manager");
-            hr.setEmail("hr@test.com");
-            hr.setPassword("admin123");
-            hr.setRole("HR");
-            hr.setLeavesTaken(0.0);
-            userRepo.save(hr);
+            if (userRepo.findByEmail("admin@innereye.com").isEmpty()) {
+                User hr = new User();
+                hr.setName("Corporate HR");
+                hr.setDesignation("People Lead");
+                hr.setEmail("admin@innereye.com");
+                hr.setPassword("admin123");
+                hr.setRole("HR");
+                hr.setLeavesTaken(0.0);
+                userRepo.save(hr);
 
-            // 2. Employee Login Account
-            User emp = new User();
-            emp.setName("Rishav");
-            emp.setDesignation("Software Engineer");
-            emp.setEmail("rishav@test.com");
-            emp.setPassword("rishav123");
-            emp.setRole("EMPLOYEE");
-            emp.setLeavesTaken(0.0);
-            userRepo.save(emp);
+                User emp = new User();
+                emp.setName("Harsh");
+                emp.setDesignation("Backend Engineer");
+                emp.setEmail("harsh@innereye.com");
+                emp.setPassword("harsh123");
+                emp.setRole("EMPLOYEE");
+                emp.setLeavesTaken(0.0);
+                userRepo.save(emp);
+            }
         };
     }
 }

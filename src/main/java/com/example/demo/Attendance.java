@@ -18,6 +18,7 @@ public class Attendance {
     private LocalDate date;
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
+    private String totalWorkingHours; // e.g., "8h 15m"
     private String status; // IN, COMPLETED
 
     public Attendance() {}
@@ -29,7 +30,6 @@ public class Attendance {
         this.status = status;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
@@ -39,6 +39,8 @@ public class Attendance {
     public void setCheckInTime(LocalTime checkInTime) { this.checkInTime = checkInTime; }
     public LocalTime getCheckOutTime() { return checkOutTime; }
     public void setCheckOutTime(LocalTime checkOutTime) { this.checkOutTime = checkOutTime; }
+    public String getTotalWorkingHours() { return totalWorkingHours; }
+    public void setTotalWorkingHours(String totalWorkingHours) { this.totalWorkingHours = totalWorkingHours; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 }
