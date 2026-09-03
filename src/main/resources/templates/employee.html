@@ -10,30 +10,48 @@
         <!-- Top Nav -->
         <header class="flex justify-between items-center bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
             <div>
-                <h1 class="text-xl font-bold text-slate-900" th:text="${user.name}">Aman Gupta</h1>
+                <h1 class="text-xl font-bold text-slate-900" th:text="${user.name}">Employee</h1>
                 <p class="text-sm text-slate-500" th:text="${user.designation} + ' • ' + ${user.email}"></p>
             </div>
             <a href="/logout" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition">Sign Out</a>
         </header>
 
-        <!-- Stats Bar -->
+        <!-- Stats Bar (IST Clock + 18 Annual Leave Quota) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
                 <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Live Local Clock (IST)</p>
                 <p id="liveClock" class="text-3xl font-bold font-mono text-blue-600 mt-2">--:--:--</p>
             </div>
-            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex items-center justify-between">
-                <div>
-                    <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Leave Balance Used</p>
-                    <p class="text-3xl font-bold text-amber-500 mt-2" th:text="${user.leavesTaken != null ? user.leavesTaken : 0.0} + ' Days'">0.0 Days</p>
+            
+            <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col justify-between gap-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs uppercase font-bold text-slate-400 tracking-wider">Annual Leave Quota (18 Days)</p>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-2xl font-bold text-slate-900" th:text="${18.0 - (user.leavesTaken != null ? user.leavesTaken : 0.0)} + ' Left'">18.0 Left</span>
+                            <span class="text-xs text-slate-500 font-medium" th:text="'(' + ${user.leavesTaken != null ? user.leavesTaken : 0.0} + ' used)'"></span>
+                        </div>
+                    </div>
+                    <span th:if="${(user.leavesTaken != null ? user.leavesTaken : 0.0) >= 18.0}" 
+                          class="px-2.5 py-1 text-xs rounded-lg font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                        Exhausted
+                    </span>
+                    <span th:if="${(user.leavesTaken != null ? user.leavesTaken : 0.0) < 18.0}" 
+                          class="px-2.5 py-1 text-xs rounded-lg font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                        Max 18/Year
+                    </span>
                 </div>
+                
                 <form action="/employee/apply-leave" method="post" class="flex gap-2">
-                    <select name="days" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700">
-                        <option value="0.5">0.5 Day</option>
-                        <option value="1.0" selected>1.0 Day</option>
+                    <select name="days" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none">
+                        <option value="0.5">0.5 Day (Half)</option>
+                        <option value="1.0" selected>1.0 Day (Full)</option>
                     </select>
-                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-medium transition shadow-md shadow-amber-500/20">
-                        Request Leave
+                    <button type="submit" 
+                            th:disabled="${(user.leavesTaken != null ? user.leavesTaken : 0.0) >= 18.0}"
+                            th:classappend="${(user.leavesTaken != null ? user.leavesTaken : 0.0) >= 18.0} ? 'opacity-50 cursor-not-allowed bg-slate-400' : 'bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/20'"
+                            class="px-4 py-2 rounded-xl text-sm font-medium transition">
+                        Apply Leave
                     </button>
                 </form>
             </div>

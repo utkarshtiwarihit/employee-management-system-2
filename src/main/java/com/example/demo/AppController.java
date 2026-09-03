@@ -95,9 +95,12 @@ public class AppController {
         if (sessionUser != null) {
             userRepo.findById(sessionUser.getId()).ifPresent(user -> {
                 double current = user.getLeavesTaken() != null ? user.getLeavesTaken() : 0.0;
-                user.setLeavesTaken(current + days);
-                userRepo.save(user);
-                session.setAttribute("user", user);
+                // Maximum 18 leaves limit
+                if (current + days <= 18.0) {
+                    user.setLeavesTaken(current + days);
+                    userRepo.save(user);
+                    session.setAttribute("user", user);
+                }
             });
         }
         return "redirect:/employee";

@@ -64,7 +64,7 @@
             </form>
         </div>
 
-        <!-- Directory Table -->
+        <!-- Directory Table with 18-Leave Quota Tracking -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <h2 class="text-base font-bold text-slate-900 mb-4">Team Directory</h2>
             <div class="overflow-x-auto">
@@ -75,7 +75,7 @@
                             <th class="pb-3">Name</th>
                             <th class="pb-3">Role & Title</th>
                             <th class="pb-3">Contact</th>
-                            <th class="pb-3">Leaves Consumed</th>
+                            <th class="pb-3">Leave Balance (Used / 18)</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -87,14 +87,21 @@
                                 <span class="text-xs ml-1" th:text="${emp.designation}"></span>
                             </td>
                             <td class="py-3.5 text-slate-600" th:text="${emp.email}"></td>
-                            <td class="py-3.5 text-amber-600 font-medium" th:text="${emp.leavesTaken != null ? emp.leavesTaken : 0.0} + ' Days'"></td>
+                            <td class="py-3.5 text-sm">
+                                <span class="font-semibold text-slate-900" th:text="${emp.leavesTaken != null ? emp.leavesTaken : 0.0}">0.0</span>
+                                <span class="text-slate-400"> / 18.0 Days</span>
+                                <span th:if="${(emp.leavesTaken != null ? emp.leavesTaken : 0.0) >= 18.0}" 
+                                      class="ml-2 text-xs text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded font-medium">
+                                    Exhausted
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Logs Feed -->
+        <!-- Master Attendance Feed -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <h2 class="text-base font-bold text-slate-900 mb-4">Master Attendance Audit</h2>
             <div class="overflow-x-auto">
